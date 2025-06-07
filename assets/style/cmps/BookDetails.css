@@ -1,4 +1,6 @@
 .book-details {
+    width: 50%;
+    height: auto;
     display: flex;
     position: relative;
     flex-direction: column;
@@ -8,7 +10,7 @@
     border-radius: 15px;
 
     padding: 10px;
-    background: #81cde0c7;
+    background-color: #e1ecef;
 }
 
 .book-details .book-details-nav {

@@ -1,3 +1,9 @@
+.books-list
+{
+    width: 85%;
+}
+
+
 .books-list ul {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
