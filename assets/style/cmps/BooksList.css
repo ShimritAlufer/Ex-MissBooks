@@ -1,0 +1,39 @@
+.books-list ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    justify-content: center;
+    gap: 10px;
+}
+
+.books-list ul li {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: start;
+
+    border-radius: 8px;
+    margin: 7px;
+    padding: 10px;
+    background-color: #e1ecef;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.close {
+    position: absolute;
+    border-radius: 50%;
+    top: -7px;
+    right: -7px;
+    background: rgb(152, 179, 197);
+}
+
+.books-list li:hover img {
+    animation: bounceIn;
+    animation-duration: 2s;
+}
+
+.nav-btns
+{
+    background: rgb(152, 179, 197);
+}
