@@ -1,42 +1,91 @@
-import { carService } from "../services/book.service.js"
+import { bookService } from "../services/book.service.js"
+import { LongTxt } from "../cmps/LongTxt.jsx";
 
 const { useState, useEffect } = React
-const { useParams, useNavigate, Link } = ReactRouterDOM
+const { useParams, useNavigate } = ReactRouter
+const { Link } = ReactRouterDOM
 
 export function BookDetails() {
-    const [car, setCar] = useState(null)
+    const [book, setBook] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
+
     const params = useParams()
     const navigate = useNavigate()
 
     useEffect(() => {
-        loadCar()
-    }, [params.carId])
+        loadBook()
+    }, [params.bookId])
 
-    function loadCar() {
-        carService.get(params.carId)
-            .then(setCar)
-            .catch(err => {
-                console.log('err:', err)
+    function loadBook() {
+        setIsLoading(true)
+        bookService.get(params.bookId)
+            .then(setBook)
+            .catch(() => {
+                navigate(`/book`)
+            })
+            .finally(() => {
+                setIsLoading(false)
             })
     }
 
-    function onBack() {
-        navigate('/car')
+
+    function getBookDateLevel() {
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const yearsSinceOut = currentYear - book.publishedDate
+        let dateLevelTxt = ''
+        if (yearsSinceOut > 10) dateLevelTxt = 'Vintage Book'
+        if (yearsSinceOut < 3) dateLevelTxt = 'New Book'
+        return dateLevelTxt
     }
 
-    console.log('Render', params)
-    if (!car) return <div>Loading...</div>
+    function bookReadingLevel() {
+        if (book.pageCount > 500) return 'Serious Reading'
+        if (book.pageCount > 200) return 'Descent Reading'
+        return 'Light Reading'
+    }
+
+
+    if (isLoading || !book) return <div className="loader"></div>
+
+    const bookPriceClass = book.listPrice.amount > 200 ? 'high-price' : 'low-price';
     return (
-        <section className="car-details">
-            <h1>Car Vendor: {car.vendor}</h1>
-            <h1>Car Speed: {car.speed}</h1>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facilis quae fuga eveniet, quisquam ducimus modi optio in alias accusantium corrupti veritatis commodi tenetur voluptate deserunt nihil quibusdam. Expedita, architecto omnis?</p>
-            <img src={`../assets/img/${car.vendor}.png`} alt="car-image" />
-            <button onClick={onBack}>Back</button>
-            <section>
-                <Link to={`/car/${car.prevCarId}`}><button>Prev Car</button></Link>
-                <Link to={`/car/${car.nextCarId}`}><button>Next Car</button></Link>
-            </section>
-        </section>
+        <article className='book-details'>
+            <nav className='book-details-nav'>
+                <Link to={`/book/${book.prevBookId}`}>
+                    <button><i className="fa-solid fa-arrow-left"></i></button>
+                </Link>
+                <Link to={`/book/${book.nextBookId}`}>
+                    <button><i className="fa-solid fa-arrow-right"></i></button>
+                </Link>
+            </nav>
+            <h2>{book.title}</h2>
+            <span>{getBookDateLevel()}</span>
+            <h4>{bookReadingLevel()}</h4>
+
+            <img className='book-img' src={book.thumbnail} alt="" />
+
+            <p className={bookPriceClass}>
+                <span className='bold-txt'>Price: </span>
+                {book.listPrice.amount} {book.listPrice.currencyCode}
+            </p>
+            <p>
+                <span className='bold-txt'>Language:</span>
+                {book.language}
+            </p>
+            {book.categories && <p>
+                <span className='bold-txt'>Categoric:</span> {book.categories}
+            </p>}
+            {book.authors && <p>
+                <span className='bold-txt'>Authors:</span> {book.authors}
+            </p>}
+            {book.description && <LongTxt txt={book.description} />}
+            {book.listPrice.isOnSale && <img className="on-sale-icon" src="/assets/booksImages/onSale.png.png" alt="" />}
+            <button className='close'>
+                <Link to='/book'>X</Link>
+            </button>
+
+
+        </article>
     )
 }

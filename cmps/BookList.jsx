@@ -3,10 +3,9 @@ const { Link } = ReactRouterDOM
 import { BookPreview } from "./BookPreview.jsx"
 
 export function BookList({ books, onRemove }) {
-    return (
-    <section className='books-list'>
+    return <section className='books-list'>
         <ul>
-            {books.map(book =>
+            {books && books.map(book =>
                 <li key={book.id}>
                     <BookPreview book={book} />
                     <button onClick={() => onRemove(book.id)} className='close'><i className="fa-regular fa-trash-can"></i></button>
@@ -18,5 +17,5 @@ export function BookList({ books, onRemove }) {
             )}
         </ul>
     </section>
-    )
+    
 }

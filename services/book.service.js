@@ -1,4 +1,4 @@
-import { loadFromStorage, makeId, saveToStorage } from './util.service.js'
+import { utilService } from './util.service.js'
 import { storageService } from './async-storage.service.js'
 
 const BOOK_KEY = 'bookDB'
@@ -11,6 +11,11 @@ export const bookService = {
     save,
     getEmptyBook,
     getDefaultFilter,
+    saveReview,
+    removeReview,
+    getGoogleBooks,
+    addGoogleBook,
+    getEmptyReview
 }
 
 
@@ -109,3 +114,85 @@ function _setNextPrevBookId(book) {
     })
 }
 
+function saveReview(bookId, reviewToSave) {
+    return get(bookId).then(book => {
+        const review = _createReview(reviewToSave)
+        book.reviews.unshift(review)
+        return save(book).then(() => review)
+    })
+}
+
+
+function getEmptyReview() {
+    return {
+        fullName: 'new name',
+        rating: 0,
+        date: new Date().toISOString().slice(0, 10),
+        txt: '',
+        selected: 0,
+    }
+}
+
+function removeReview(bookId, reviewId) {
+    return get(bookId).then(book => {
+        const newReviews = book.reviews.filter((review) => review.id !== reviewId)
+        book.reviews = newReviews
+        return save(book)
+    })
+}
+
+function addGoogleBook(book) {
+    return storageService.post(BOOK_KEY, book, false)
+}
+
+function getGoogleBooks(bookName) {
+    if (bookName === '') return Promise.resolve()
+    const googleBooks = gCache[bookName]
+    if (googleBooks) {
+        console.log('data from storage...', googleBooks)
+        return Promise.resolve(googleBooks)
+    }
+
+    const url = `https://www.googleapis.com/books/v1/volumes?printType=books&q=${bookName}`
+    return axios.get(url)
+        .then(res => {
+            const data = res.data.items
+            console.log('data from network...', data)
+            const books = _formatGoogleBooks(data)
+            gCache[bookName] = books
+            utilService.saveToStorage(CACHE_STORAGE_KEY, gCache)
+            return books
+        })
+}
+
+
+function _createReview(reviewToSave) {
+    return {
+        id: utilService.makeId(),
+        ...reviewToSave,
+    }
+}
+
+function _formatGoogleBooks(googleBooks) {
+    return googleBooks.map(googleBook => {
+        const { volumeInfo } = googleBook
+        const book = {
+            id: googleBook.id,
+            title: volumeInfo.title,
+            description: volumeInfo.description,
+            pageCount: volumeInfo.pageCount,
+            authors: volumeInfo.authors,
+            categories: volumeInfo.categories,
+            publishedDate: volumeInfo.publishedDate,
+            language: volumeInfo.language,
+            listPrice: {
+                amount: utilService.getRandomIntInclusive(80, 500),
+                currencyCode: "EUR",
+                isOnSale: Math.random() > 0.7
+            },
+            reviews: []
+        }
+        if (volumeInfo.imageLinks) book.thumbnail = volumeInfo.imageLinks.thumbnail
+        return book
+    })
+}

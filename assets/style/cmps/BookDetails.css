@@ -1,0 +1,44 @@
+.book-details {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+
+    margin-block-start: 20px;
+    border-radius: 15px;
+
+    padding: 10px;
+    background: #81cde0c7;
+}
+
+.book-details .book-details-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.bold-txt {
+    font-weight: bold;
+}
+
+.book-details h4 {
+    font-size: 0.8em;
+}
+
+.high-price {
+    color: red;
+}
+
+.low-price {
+    color: green;
+}
+
+.book-details .book-img {
+    width: 200px
+}
+
+.brake-line {
+    height: 2px;
+    background: black;
+    width: 100%;
+    margin-block: 1em;
+}

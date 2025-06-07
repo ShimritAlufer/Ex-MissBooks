@@ -2,7 +2,6 @@ const Router = ReactRouterDOM.HashRouter
 const { Routes, Route, Navigate } = ReactRouterDOM
 
 import { AppHeader } from "./cmps/AppHeader.jsx"
-import { NotFound } from "./cmps/NotFound.jsx"
 import { AboutUs } from "./pages/AboutUs.jsx"
 import { BookIndex } from "./pages/BookIndex.jsx"
 import { HomePage } from "./pages/HomePage.jsx"

@@ -15,7 +15,7 @@
 
 
 /* Components */
-@import "cmps/app-header.css";
+@import "./cmps/app-header.css";
 @import './cmps/BooksList.css';
 @import './cmps/BookPreview.css';
 @import './cmps/BookFilter.css';
