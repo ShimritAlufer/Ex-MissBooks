@@ -1,27 +1,104 @@
+import { bookService } from "../services/book.service.js"
+import { showErrorMsg } from '../services/event-bus.service.js'
+import { showSuccessMsg } from '../services/event-bus.service.js'
 
-import { carService } from "../services/car.service.js"
+const { useParams, useNavigate } = ReactRouter
 
 const { useState, useEffect } = React
 
-// export function CarEdit() {
+export function BookEdit() {
+    const [book, setBook] = useState(bookService.getEmptyBook)
+    const params = useParams()
+    const navigate = useNavigate()
 
+    useEffect(() => {
+        if (!params.bookId) return
+        bookService.get(params.bookId).then(setBook)
+    }, [])
 
-//     const isEdit = false
-//     return (
-//         <section onSubmit={onSaveCar} className="car-edit">
-//             <h1>{isEdit ? 'Edit' : 'Add'} Car</h1>
-//             <form>
-//                 <label htmlFor="vendor">Vendor</label>
-//                 <input type="text" name="vendor" id="vendor" />
+    function onSave(ev) {
+        ev.preventDefault()
+        bookService.save(book)
+            .then(() => showSuccessMsg('Book has successfully saved!'))
+            .catch(() => showErrorMsg(`couldn't save book`))
+            .finally(() => navigate('/book'))
+    }
 
-//                 <label htmlFor="speed">Speed</label>
-//                 <input type="number" name="speed" id="speed" />
-//                 <section className="btns flex">
-//                     <button>Save</button>
-//                     <button type="button" className="back-btn" >Back</button>
-//                 </section>
-//             </form>
-//         </section>
-//     )
+    function handleChange({ target }) {
+        const { type, name: prop } = target
+        let { value } = target
 
-// }
+        switch (type) {
+            case 'range':
+            case 'number':
+                value = +value
+                break;
+
+            case 'checkbox':
+                value = target.checked
+                break;
+        }
+        setBook(prevBook => ({ ...prevBook, [prop]: value }))
+    }
+
+    function handleChangeListPrice({ target }) {
+        const { type, name: prop } = target
+        let { value } = target
+
+        switch (type) {
+            case 'range':
+            case 'number':
+                value = +value
+                break;
+
+            case 'checkbox':
+                value = target.checked
+                break;
+        }
+
+        setBook(prevBook => ({
+            ...prevBook,
+            listPrice: { ...prevBook.listPrice, [prop]: value }
+        }))
+    }
+
+    const {
+        title,
+        authors,
+        listPrice,
+        description,
+        pageCount,
+    } = book
+
+    return <section className='book-edit'>
+        <h2>Add Book</h2>
+        Add a book manually:
+        <form onSubmit={onSave}>
+            <label className='bold-txt' htmlFor="title">Title: </label>
+            <input onChange={handleChange} value={title}
+                id='title' type="text" name='title' />
+
+            <label className='bold-txt' htmlFor="authors">Authors: </label>
+            <input onChange={handleChange} value={authors}
+                id='authors' type="text" name='authors' />
+
+            <label className='bold-txt' htmlFor="price">Price: </label>
+            <input onChange={handleChangeListPrice} value={listPrice.amount}
+                id='price' type="number" name='amount' />
+
+            <label className='bold-txt' htmlFor="description">Description: </label>
+            <input onChange={handleChange} value={description}
+                id='description' type="text" name='description' />
+
+            <label className='bold-txt' htmlFor="pages">Number of pages: </label>
+            <input onChange={handleChange} value={pageCount}
+                id='pages' type="number" name='pageCount' />
+
+            <label className='bold-txt' htmlFor="isOnSale">On Sale: </label>
+            <input onChange={handleChangeListPrice} checked={listPrice.isOnSale}
+                id='isOnSale' type="checkbox" name='isOnSale' />
+
+            <button>Save</button>
+        </form>
+    </section>
+}
