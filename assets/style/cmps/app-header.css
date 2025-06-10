@@ -1,8 +1,8 @@
 .app-header {
-    background-color: var(--clr1);
-    color: var(--clr1bg-light);
+    background-color:rgb(152, 179, 197);
+    color: var(--gray3);
     padding-block: .75em;
-
+    padding-right: 15px;;
 }
 
 .app-header section:first-child {
@@ -18,7 +18,7 @@
 }
 
 .app-header a.active {
-    color: var(--clr2bg);
+    color: white;
     font-weight: 600;
     text-decoration: underline;
 }

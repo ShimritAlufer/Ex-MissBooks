@@ -5,9 +5,10 @@
 html {}
 
 body {
-    margin: 0;
+    margin: 0 auto; 
     color: var(--gray3);
     font-size: 1.2rem;
+    width: 95%;
 }
 
 h1,

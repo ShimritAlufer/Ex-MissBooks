@@ -2,3 +2,12 @@
 .home img {
     width: 20%;
 }
+
+.home p {
+    margin-block-start: 10px;
+}
+
+.add-book {
+    display: flex;
+    margin: 5px auto;
+}

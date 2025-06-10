@@ -1,6 +1,7 @@
 .books-list
 {
     width: 85%;
+    margin: 0 auto;
 }
 
 
@@ -42,4 +43,9 @@
 .nav-btns
 {
     background: rgb(152, 179, 197);
+}
+
+.nav-btns:hover, .close:hover
+{
+    background: rgb(85, 115, 134);
 }
