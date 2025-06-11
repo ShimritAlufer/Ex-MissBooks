@@ -17,12 +17,7 @@ function createEventEmitter() {
     }
 }
 
-
-
-
 export const eventBusService = createEventEmitter()
-
-
 
 export function showSuccessMsg(txt) {
     showUserMsg({ txt, type: 'success' })
@@ -37,7 +32,8 @@ function showUserMsg(msg) {
 
 
 //* Use this to demo the service from the console
-window.ebs = eventBusService
+window.showSuccessMsg = showSuccessMsg
+window.showErrorMsg = showErrorMsg
 
 //* Example for using the service
 // eventBusService.on('some-event', (data) => {
