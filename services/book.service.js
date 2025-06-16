@@ -115,6 +115,7 @@ function _setNextPrevBookId(book) {
 }
 
 function saveReview(bookId, reviewToSave) {
+    //if (!book.reviews) book.reviews = []
     return get(bookId).then(book => {
         const review = _createReview(reviewToSave)
         book.reviews.unshift(review)

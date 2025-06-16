@@ -1,5 +1,6 @@
 import { bookService } from "../services/book.service.js"
 import { LongTxt } from "../cmps/LongTxt.jsx";
+import { AddReview } from "./AddReview.jsx";
 
 const { useState, useEffect } = React
 const { useParams, useNavigate } = ReactRouter
@@ -27,7 +28,6 @@ export function BookDetails() {
                 setIsLoading(false)
             })
     }
-
 
     function getBookDateLevel() {
         const currentDate = new Date();
@@ -79,7 +79,26 @@ export function BookDetails() {
             {book.authors && <p>
                 <span className='bold-txt'>Authors:</span> {book.authors}
             </p>}
+            
+            
             {book.description && <LongTxt txt={book.description} />}
+            
+            <AddReview bookId={params.bookId}/>
+            {book.reviews && book.reviews.length > 0 && (
+            <section className="book-reviews">
+                <h3>Reviews:</h3>
+                <ul>
+                {book.reviews.map((review, idx) => (
+                    <li key={idx}>
+                    <p><strong>{review.fullname}</strong></p>
+                    <p>Rating: {review.rating} ⭐</p>
+                    <p>Read at: {review.readAt}</p>
+                    </li>
+                ))}
+                </ul>
+            </section>
+            )}
+            
             {book.listPrice.isOnSale && <img className="on-sale-icon" src="/assets/booksImages/onSale.png.png" alt="" />}
             <button className='close'>
                 <Link to='/book'>X</Link>

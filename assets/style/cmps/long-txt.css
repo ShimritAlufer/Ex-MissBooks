@@ -1,0 +1,24 @@
+.long-txt {
+    width: 100%;
+    padding-inline: 1em;
+    padding-bottom: 0.5em;
+}
+
+.long-txt p.txt {
+    margin-bottom: .5em;
+    font-weight: 520;
+}
+
+
+.show-txt-btn {
+    background-color: transparent;
+    border: none;
+    padding-inline: 0;
+    color: rgba(0, 0, 0, 0.65);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.show-txt-btn:hover {
+    text-decoration: underline;
+}
