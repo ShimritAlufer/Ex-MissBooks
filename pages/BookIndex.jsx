@@ -39,6 +39,7 @@ export function BookIndex() {
             <h2>Books list</h2>
             <BookFilter filterBy={{ minPrice, title }} onSetFilterBy={onSetFilterBy} />
             <Link to="/book/edit"><button className='add-book'>Add book</button></Link>
+            <Link to="/book/add"><button className='add-book'>Search book</button></Link>
             <BookList books={books} onRemove={removeBook} />
         </div>
     )

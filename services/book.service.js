@@ -142,9 +142,37 @@ function removeReview(bookId, reviewId) {
     })
 }
 
-function addGoogleBook(book) {
-    return storageService.post(BOOK_KEY, book, false)
+// function addGoogleBook(book) {
+//     console.log(book)
+//     return storageService.post(BOOK_KEY, book, false)
+// }
+
+function addGoogleBook(googleBook) {
+    const { volumeInfo } = googleBook
+
+    const book = {
+        id: utilService.makeId(), 
+        title: volumeInfo.title || '',
+        authors: volumeInfo.authors || ['Unknown'],
+        description: volumeInfo.description || '',
+        pageCount: volumeInfo.pageCount || 0,
+        thumbnail: volumeInfo.imageLinks && volumeInfo.imageLinks.thumbnail 
+           ? volumeInfo.imageLinks.thumbnail 
+           : '/assets/booksImages/15.jpg',
+        language: volumeInfo.language || 'en',
+        categories: volumeInfo.categories || [],
+        publishedDate: volumeInfo.publishedDate || 'N/A',
+        listPrice: {
+            amount: utilService.getRandomIntInclusive(80, 500),
+            currencyCode: 'EUR',
+            isOnSale: Math.random() > 0.7
+        },
+        reviews: []
+    }
+
+    return storageService.post(BOOK_KEY, book)
 }
+
 
 function getGoogleBooks(bookName) {
     if (bookName === '') return Promise.resolve()

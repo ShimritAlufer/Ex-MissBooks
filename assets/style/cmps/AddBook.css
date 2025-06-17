@@ -4,11 +4,40 @@
     gap: 10px;
 }
 
+.tbSearchBar
+{
+    display: flex;
+    height:30px;
+    width: 200px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.tbSearchBar:focus
+{
+    background-color: var(--clr2bg);
+}
+
+.btAddToList
+{
+    width: 25px;
+    height: 25px;
+    font-size: 18px;
+    border-radius: 50%;
+    display: flex;        
+    align-items: center;    
+    justify-content: center; 
+    cursor: pointer;         
+   
+}
 
 .google-search-list {
     display: flex;
     flex-direction: column;
     list-style: circle;
+    
+    width: 80%;
+    margin: 0 auto;
 }
 
 .google-search-list li {
